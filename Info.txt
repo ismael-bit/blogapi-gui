@@ -1,0 +1,126 @@
+Enc. Itla 829-451-3779
+
+Telegram
+JavaScript2019
+t.me/javascript2019
+
+
+
+Hector Ventura
+@hectorvent
+*Git
+*NodeJS
+*JavaScript
+*Librerias
+*CSS(Boostrap)
+
+Rama
+Merge
+Commit
+
+git 
+git init
+git status
+git checkout
+git commit
+git merge
+git log
+history | grep commit
+github
+
+git remote add origin http...
+
+git add - git commit - git push
+
+**Json**
+Tipos de datos
+String ""
+Numerico 0 - 9
+Booleano True/False
+Arreglo []
+Objeto {}
+Null null
+
+{
+"nombre" : "Ismael"
+"id" : "12345"
+"Credit" : 25
+"subjets":[
+           "math"
+           "spanish"
+		  ]
+}
+
+
+Api 
+Websocket
+
+
+
+vscode
+git
+nodejs
+hithub
+
+21/09/2019
+Introduccion Js
+Herramientas en explorador
+Accediendo DOM
+Manejo Variables(Clase siguiente)
+Funciones(Clase siguiente)
+
+Temas-Investigar:
+
+Framework(Reatct, Angular, VueJs,Express)
+Webpack
+
+npm Proyect
+*yarn
+
+Anatomia Request/Response HTTP
+HTTP Codes
+Fetch
+
+
+Request
+Get
+Post
+Put
+Delete
+
+CRUD
+
+b3abc6c1-7e60-4005-b84e-3dec24f8bfbd
+55058cd4-5896-490a-ad7b-729c7de325e4
+Rest Api
+
+28-09-2019
+--Anatomia Request--
+Metod GET HPPT/1.1
+Headers
+Content-Type: aplication/json(Investigar)
+Authorization
+Content-lenpth:
+I /n (salto de linea)
+Body{}
+
+
+
+Investigar
+Ruta y Protocolo
+DNS
+Investigar HPPT/2 spydy
+CORS
+
+Investigar(Expo) 12factor.net
+CSS
+Boostrap
+
+Local Storage
+web worker
+
+poner la app como:
+npm
+webpack
+
+startbootstrap-sb-admin-gh-pages
