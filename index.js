@@ -9,6 +9,18 @@ document.getElementById("placeholder").textContent = "Hola " + nombre;
 function login(){
     var username =document.getElementById("username").value;
     var password =document.getElementById("password").value;
+
+    if(username==""){
+      alert("Usuario no puede estar en blanco");
+      document.getElementById("username").focus();
+      return;
+    }
+    if(password==""){
+      alert("Contraseña no puede estar en blanco");
+      document.getElementById("password").focus();
+      return;
+    }
+
     var data ={
         username: username,
         password:password,
@@ -23,6 +35,29 @@ function login(){
           'Content-Type': 'application/json'
         }
       }).then(res => res.json())
+      .then(response => {
+        if(response.estatus && response.estatus == "error"){
+            alert("Usuario o Contraseña incorrectos.");
+            document.getElementById("password").focus();
+        }else{
+            var UserData = {
+                "id":response.id,
+                "name":response.name,
+                "email":response.email,
+                "token":response.token
+            };
+            alert("Usuario " + UserData.name + " logeado correctamente");
+            window.location.href ="index.html";
+            /*
+            localStorageSaver(JSON.stringify(UserData));
+            session("Iniciando session como: "+UserData.name);
+            setTimeout(function(){
+                $("#form-login")[0].reset();
+                window.location.href = "index.html";
+            },1500);
+            */
+        }
+       })      
       .catch(error => console.error('Error:', error))
       .then(response => console.log('Success:', response));
 }
