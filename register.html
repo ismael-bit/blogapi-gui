@@ -16,6 +16,8 @@
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
+  <script src="register.js"></script>
+  <script src="env.js"></script>    
 
 </head>
 <div class="card-header"><center><h2 style="color:#FDFEFE";> Blog Api - GUI - REGISTRO</h2></div>
@@ -29,7 +31,7 @@
 
           <div class="form-group">
                 <div class="form-label-group">
-                  <input type="text" id="firstName" class="form-control" placeholder="Nombre Completo" required="required" autofocus="autofocus">
+                  <input type="text" id="txtname" class="form-control" placeholder="Nombre Completo" required="required" autofocus="autofocus">
                   <label for="firstName">Nombre completo</label>
               <!-- <div class="col-md-6">
                 <div class="form-label-group">
@@ -42,7 +44,7 @@
 
           <div class="form-group">
             <div class="form-label-group">
-              <input type="email" id="inputEmail" class="form-control" placeholder="Correo Electronico" required="required">
+              <input type="email" id="txtemail" class="form-control" placeholder="Correo Electronico" required="required">
               <label for="inputEmail">Correo Electrónico</label>
             </div>
           </div>
@@ -51,20 +53,20 @@
             <div class="form-row">
               <div class="col-md-6">
                 <div class="form-label-group">
-                  <input type="password" id="inputPassword" class="form-control" placeholder="Contrasena" required="required">
+                  <input type="password" id="txtpassword" class="form-control" placeholder="Contrasena" required="required">
                   <label for="inputPassword">Contraseña</label>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-label-group">
-                  <input type="password" id="confirmPassword" class="form-control" placeholder="Confirmar Contrasena" required="required">
+                  <input type="password" id="txtpassword2" class="form-control" placeholder="Confirmar Contrasena" required="required">
                   <label for="confirmPassword">Confirmar Contraseña</label>
                 </div>
               </div>
             </div>
           </div>
           
-          <a class="btn btn-primary btn-block" href="login.html">Crear Cuenta</a>
+          <a class="btn btn-primary btn-block" id="btnregistrarse">Crear Cuenta</a>
         </form>
         <div class="text-center">
           <a class="d-block small mt-3" href="login.html">Login</a>
