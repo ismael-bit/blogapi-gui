@@ -47,6 +47,7 @@ function login(){
                 "token":response.token
             };
             alert("Usuario " + UserData.name + " logeado correctamente");
+            localStorage.setItem('token', response.token);
             window.location.href ="index.html";
             /*
             localStorageSaver(JSON.stringify(UserData));
@@ -62,8 +63,23 @@ function login(){
       .then(response => console.log('Success:', response));
 }
 
+function isLoged(){
+  var token = localStorage.getItem('token');
+
+  if (token === null || token === undefined){
+      return false;
+  }
+
+  return true;
+}
+
 window.onload = function(){
-    document.getElementById("btnLogin").addEventListener('click',function(){login();});
+  if (isLoged()) {
+    window.location.href = 'index.html';
+  };
+
+
+  document.getElementById("btnLogin").addEventListener('click',function(){login();});
 }
     
 /*
