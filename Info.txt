@@ -109,7 +109,7 @@ Body{}
 Investigar
 Ruta y Protocolo
 DNS
-Investigar HPPT/2 spydy
+Investigar HTTP/2 spydy
 CORS
 
 Investigar(Expo) 12factor.net
@@ -123,4 +123,16 @@ poner la app como:
 npm
 webpack
 
-startbootstrap-sb-admin-gh-pages
+https://www.script-tutorials.com/backend-web-api-with-c-step-by-step-tutorial/
+
+
+guardar token en Localstorage
+localStorage.setItem('Token','123456');
+localStorage.getItem('Token');
+localStorage.removeItem('Token');
+
+enviar un JSON a localStorage
+var x = JSON.springify(Objeto);
+var Objeto = JSON.parse(x);
+
+
