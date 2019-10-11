@@ -1,90 +1,33 @@
-/*
-function saludar(){
-var nombre =document.getElementById("nombre_persona").value;
-//alert("Hola "+ nombre + "!");
-document.getElementById("placeholder").textContent = "Hola " + nombre;
-}
-*/
+  function logout() {
 
-function login(){
-    var username =document.getElementById("username").value;
-    var password =document.getElementById("password").value;
-
-    if(username==""){
-      alert("Usuario no puede estar en blanco");
-      document.getElementById("username").focus();
-      return;
-    }
-    if(password==""){
-      alert("Contraseña no puede estar en blanco");
-      document.getElementById("password").focus();
-      return;
-    }
-
-    var data ={
-        username: username,
-        password:password,
-        email:username
-    };
-    console.log(data);
-    
-    fetch(`${API_PATH}/login`, {
-        method: 'POST',
+    var data;
+    fetch(`${API_PATH}/logout`, {
+        method: 'DELETE',
         body: JSON.stringify(data), // data can be `string` or {object}!
         headers:{
           'Content-Type': 'application/json'
         }
       }).then(res => res.json())
-      .then(response => {
-        if(response.estatus && response.estatus == "error"){
-            alert("Usuario o Contraseña incorrectos.");
-            document.getElementById("password").focus();
-        }else{
-            var UserData = {
-                "id":response.id,
-                "name":response.name,
-                "email":response.email,
-                "token":response.token
-            };
-            alert("Usuario " + UserData.name + " logeado correctamente");
-            localStorage.setItem('token', response.token);
-            window.location.href ="index.html";
-            /*
-            localStorageSaver(JSON.stringify(UserData));
-            session("Iniciando session como: "+UserData.name);
-            setTimeout(function(){
-                $("#form-login")[0].reset();
-                window.location.href = "index.html";
-            },1500);
-            */
-        }
-       })      
       .catch(error => console.error('Error:', error))
       .then(response => console.log('Success:', response));
-}
 
-function isLoged(){
-  var token = localStorage.getItem('token');
+    // this.httpClient.delete(`${API_PATH}/logout`);
+    console.log('1:'+ localStorage.getItem('token'));
+    localStorage.removeItem('token');
+    console.log('2:'+ localStorage.getItem('token'));
 
-  if (token === null || token === undefined){
-      return false;
+
+
+    window.location.href = '/login.html';
   }
+  
 
-  return true;
+  window.onload = function(){
+
+    var token = localStorage.getItem('token');
+    console.log(token);
+    if (token === null || token === undefined){
+        window.location.href = 'login.html';
+    }  
+    document.getElementById("btnLogout").addEventListener('click',function(){logout();}); 
 }
-
-window.onload = function(){
-  if (isLoged()) {
-    window.location.href = 'index.html';
-  };
-
-
-  document.getElementById("btnLogin").addEventListener('click',function(){login();});
-}
-    
-/*
-window.onload = function(){
-//document.getElementById("btnSaludar").addEventListener('click',function(){alert("Hola Persona");)});
-document.getElementById("btnSaludar").addEventListener('click',function(){saludar();});
-}
-*/

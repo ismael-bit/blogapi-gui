@@ -1,9 +1,37 @@
-const path = require('path');
-
 module.exports = {
-  entry: './src/index.js',
+  entry: {
+    index: './src/index.js',
+    login: './src/login.js',
+    register: './src/login.js',
+  },
   output: {
-    filename: 'index.js',
-    path: path.resolve(__dirname, 'public'),
+    path: __dirname+'/public/app',
+    publicPath: '/app/',
+    filename: '[name].js'
   },
 };
+//   module: {
+//     rules: [
+//       {
+//         test: /\.css$/,
+//         use: ['style-loader', 'css-loader']
+//       },
+//       {
+//         test: /\.js$/,
+//         exclude: /node_modules/,
+//         use: {
+//              loader: 'babel-loader',
+//              options: {
+//                presets: [
+//                 ["@babel/preset-env", {
+//                   useBuiltIns: "usage",
+//                   corejs: 3
+//                 }]
+//                ],
+//                plugins: ['@babel/plugin-proposal-class-properties']
+//              }
+//       }
+//     }
+//     ]
+//   }
+// };
