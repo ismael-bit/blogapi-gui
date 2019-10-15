@@ -49,14 +49,6 @@ function login(){
             alert("Usuario " + UserData.name + " logeado correctamente");
             localStorage.setItem('token', response.token);
             window.location.href ="index.html";
-            /*
-            localStorageSaver(JSON.stringify(UserData));
-            session("Iniciando session como: "+UserData.name);
-            setTimeout(function(){
-                $("#form-login")[0].reset();
-                window.location.href = "index.html";
-            },1500);
-            */
         }
        })      
       .catch(error => console.error('Error:', error))
