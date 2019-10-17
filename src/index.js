@@ -1,21 +1,45 @@
+const moment = require("moment");
+var token;
 
-// var postTemplate = this.httpClient.get(`${this.basePath}/views/post.html`);
+var postTemplate = `
+<div class="card" style="margib-top: 10px">
+  <div class="card-body">
+    <h5 class="card-title"><span class="oi oi-icon-name" title="icon name" aria-hidden="true"></span>{{TITLE}}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">by: <a href="#"  data-userid="{{USERID}}" class="btnEmail">{{NAME}} - {{EMAIL}}</a>, <span style='color: grey'> {{DATE}} - </span><span style='color: grey'> <i>{{DATE2}}</i></span></h6>
+    <p class="card-text">{{BODY}}</p>
 
-var postTemplate = `<div>
-<h3>{{TITLE}}</h3>
-<h5>By: {{NAME}} - <span style="color: gray;"><a href="#"  data-userid="{{USERID}}" class="btnEmail">{{EMAIL}}</a></span></h5>
-<p>{{BODY}}</p>
-<hr>
+    <button class="btn btn-primary" type="button" style="background-color: blue">
+    <i class="fas fa-thumbs-up"></i>
+    </button>
+    
+    <button class="btn btn-primary" type="button" style="background-color: green">
+    <i class="fas fa-comments"></i>
+    </button>
+
+    <button class="btn btn-primary col-sm-12 col-md-2" type="button" style="background-color: green">
+    <i class="fas fa-comments"></i>
+    </button>
+
+
+    
+
+    </div>
 </div>
-`;
+`
+
+{/* <a href="#profile/1" class="paginate_button page-item">Card link</a>
+<a href="#" class="paginate_button page-item">Another link</a> */}
 
 function showPost(){
+  var data;
+  var cabecera = new Headers();
+  cabecera.append("Authorization",'Bearer '+ token);                    
+  cabecera.append('Content-Type', 'application/json');
+  console.log("Token " + token);
   fetch(`${API_PATH}/post`, {
     method: 'GET',
-    //body: JSON.stringify(data), // data can be `string` or {object}!
-    headers:{
-      'Content-Type': 'application/json'
-    }
+    body: JSON.stringify(data), // data can be `string` or {object}!
+    headers:cabecera
   }).then(res => res.json())
   .then(res => {
       var postView = '';
@@ -25,21 +49,28 @@ function showPost(){
                                             .replace('{{NAME}}',p.userName)
                                             .replace('{{EMAIL}}',p.userEmail)
                                             .replace('{{TITLE}}',p.title)
-                                            .replace('{{USERID}}',p.userId);
+                                            .replace('{{USERID}}',p.userId)
+                                            .replace('{{DATE}}', moment(p.createdAt).format('MMMM Do YYYY, h:mm:ss a'))
+                                            .replace('{{DATE2}}', moment(p.createdAt).fromNow());
 
-                                          });
+                        });
       document.getElementById("app").innerHTML=postView;
-      //var bes = document.getElementsByClassName("btnEmail");
-      // for(i=0; i < bes.length;i++)
-      // {
-      //     bes[i].addEventListener('click',showUserProfile);
-      // }
+      var bes = document.getElementsByClassName("btnEmail");
+      for(i=0; i < bes.length;i++)
+      {
+          bes[i].addEventListener('click',showUserProfile);
+      }
 
    })      
   .catch(error => console.error('Error:', error))
   .then(response => console.log('Success:', response));
 }
 
+
+function showUserProfile(){
+
+
+}
 
 function logout() {
 
@@ -67,8 +98,9 @@ function logout() {
 
   window.onload = function(){
 
-    var token = localStorage.getItem('token');
     //console.log(token);
+    token = localStorage.getItem('token');
+
     if (token === null || token === undefined){
         window.location.href = 'login.html';
     }  
