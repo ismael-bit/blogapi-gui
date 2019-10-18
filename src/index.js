@@ -10,7 +10,7 @@ var postTemplate = `
     <h6 class="card-subtitle mb-2 text-muted">by: <a href="#"  data-liked="{{liked}}" data-postid="{{POSTID}}" data-userid="{{USERID}}" class="btnEmail">{{NAME}} - {{EMAIL}}</a>, <span style='color: grey'> {{DATE}} - </span><span style='color: grey'> <i>{{DATE2}}</i></span></h6>
     
     </br>
-    <button class="btn btn-primary" type="button" style="background-color: {{colorlike}}" class="btnLike">
+    <button class="btn btn-primary btnLike" type="button" style="background-color: {{colorlike}}">
     <i class="fas fa-thumbs-up"></i>
     </button>
     
