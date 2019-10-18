@@ -7,10 +7,10 @@ var postTemplate = `
   <div class="card-body">
     <h5 class="card-title"><span class="oi oi-icon-name" title="icon name" aria-hidden="true"></span>{{TITLE}}</h5>
     <p class="card-text">{{BODY}}</p>
-    <h6 class="card-subtitle mb-2 text-muted">by: <a href="#"  data-userid="{{USERID}}" class="btnEmail">{{NAME}} - {{EMAIL}}</a>, <span style='color: grey'> {{DATE}} - </span><span style='color: grey'> <i>{{DATE2}}</i></span></h6>
+    <h6 class="card-subtitle mb-2 text-muted">by: <a href="#"  data-liked="{{liked}}" data-postid="{{POSTID}}" data-userid="{{USERID}}" class="btnEmail">{{NAME}} - {{EMAIL}}</a>, <span style='color: grey'> {{DATE}} - </span><span style='color: grey'> <i>{{DATE2}}</i></span></h6>
     
     </br>
-    <button class="btn btn-primary" type="button" style="background-color: {{colorlike}}">
+    <button class="btn btn-primary" type="button" style="background-color: {{colorlike}}" class="btnLike">
     <i class="fas fa-thumbs-up"></i>
     </button>
     
@@ -69,21 +69,46 @@ function showPost(){
                                             .replace('{{NVIEW}}', p.views)
                                             .replace('{{colorlike}}', (p.liked==true)?'#000080':'#87CEFA')
                                             .replace('{{taging}}', getTags(p.tags))
+                                            .replace('{{liked}}', p.liked)
+                                            .replace('{{POSTID}}', p.id)
                                             ;
 
                         });
       document.getElementById("app").innerHTML=postView;
       document.getElementById("app2").innerHTML="";
+
       var bes = document.getElementsByClassName("btnEmail");
       for(i=0; i < bes.length;i++)
       {
           bes[i].addEventListener('click',showUserEventProfile);
       }
       document.getElementById("lblPagina").textContent = "Posts";
+      
+      var bes = document.getElementsByClassName("btnLike");
+      for(i=0; i < bes.length;i++)
+      {
+          bes[i].addEventListener('click',showLikeEventProfile);
+      }
+
+
 
    })      
   .catch(error => console.error('Error:', error))
   .then(response => console.log('Success:', response));
+}
+
+function showLikeEventProfile(event){
+  var ueObject = event.target;
+  var idPost = ueObject.getAttribute('data-postid');
+  var liked = ueObject.getAttribute('data-liked');
+  console.log("id post:"+idPost);
+  console.log("liked:"+liked);
+
+  if(liked===true){
+    QuitarLike(idPost);
+  }else{
+    DarLike(idPost);
+  }
 }
 
 function showUserEventProfile(event){
@@ -143,11 +168,12 @@ function getTags(data){
   var html=``;
   $(data).each(function(index,value){
       html+=`<a href="javascript:void(0)" class="btn btn-link mx-0 px-0">${$.trim(value)}</a>, `;
-  })
+// html+=`<a href="javascript:void(0)" class="btn btn-link mx-0 px-0" onclick="filtrarpost('${String($.trim(value))}')">${$.trim(value)}</a>, `;
+
+    })
   html = html.slice(0,-2);
   return html;
 }
-// html+=`<a href="javascript:void(0)" class="btn btn-link mx-0 px-0" onclick="filtrarpost('${String($.trim(value))}')">${$.trim(value)}</a>, `;
 
 
 function showUserProfile(idUser){
@@ -171,11 +197,6 @@ function showUserProfile(idUser){
       document.getElementById("app").innerHTML=postView;
       document.getElementById("app2").innerHTML="";
       document.getElementById("btnVerPosts").addEventListener('click',function(){showMyPost(res.id,1);}); 
-      // var bes = document.getElementsByClassName("btnEmail");
-      // for(i=0; i < bes.length;i++)
-      // {
-      //     bes[i].addEventListener('click',showUserProfile);
-      // }
       document.getElementById("lblPagina").textContent = "Perfil de Usuario";
 
    })      
@@ -183,7 +204,60 @@ function showUserProfile(idUser){
   .then(response => console.log('Success:', response));
 }
 
-function logout() {
+
+function QuitarLike(postId) {
+
+  var data;
+  fetch(`${API_PATH}/post/${postId}/like`, {
+      method: 'DELETE',
+      body: JSON.stringify(data), // data can be `string` or {object}!
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => console.error('Error:', error))
+    .then(response => console.log('Success:', response));
+    showPost();
+}
+
+function DarLike(postId) {
+
+  var data;
+  fetch(`${API_PATH}/post/${postId}/like`, {
+      method: 'PUT',
+      body: JSON.stringify(data), // data can be `string` or {object}!
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => console.error('Error:', error))
+    .then(response => console.log('Success:', response));
+    showPost();
+}
+
+
+function LoadMeUser(){
+    token = localStorage.getItem('token');
+
+    var data;
+    var cabecera = new Headers();
+    cabecera.append("Authorization",'Bearer '+ token);                    
+    cabecera.append('Content-Type', 'application/json');
+    fetch(`${API_PATH}/users/me`, {
+      method: 'GET',
+      body: JSON.stringify(data), // data can be `string` or {object}!
+      headers:cabecera
+    }).then(res => res.json())
+    .then(res => {
+      meUser = res;
+      console.log(meUser.name);
+      // document.getElementById("txtUserMe").textContent = meUser.name;
+     })      
+    .catch(error => console.error('Error:', error))
+    .then(response => console.log('Success:', response));
+  }
+
+  function logout() {
 
     var data;
     fetch(`${API_PATH}/logout`, {
@@ -205,29 +279,6 @@ function logout() {
 
     window.location.href = '/login.html';
   }
-  
-
-  function LoadMeUser(){
-    token = localStorage.getItem('token');
-
-    var data;
-    var cabecera = new Headers();
-    cabecera.append("Authorization",'Bearer '+ token);                    
-    cabecera.append('Content-Type', 'application/json');
-    fetch(`${API_PATH}/users/me`, {
-      method: 'GET',
-      body: JSON.stringify(data), // data can be `string` or {object}!
-      headers:cabecera
-    }).then(res => res.json())
-    .then(res => {
-      meUser = res;
-      console.log(meUser.name);
-      // document.getElementById("txtUserMe").textContent = meUser.name;
-     })      
-    .catch(error => console.error('Error:', error))
-    .then(response => console.log('Success:', response));
-  }
-
 
   window.onload = function(){
 
