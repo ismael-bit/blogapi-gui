@@ -3,7 +3,7 @@ var token;
 var meUser = null;
 
 var postTemplate = `
-<div class="card" style="margib-top: 10px">
+<div class="card" style="margin-top: 10px">
   <div class="card-body">
     <h5 class="card-title"><span class="oi oi-icon-name" title="icon name" aria-hidden="true"></span>{{TITLE}}</h5>
     <p class="card-text">{{BODY}}</p>
@@ -26,13 +26,26 @@ var postTemplate = `
 </div>
 </br>
 `
-    // <p align="right">{{taging}}</p>
 
-{/* <a href="#profile/1" class="paginate_button page-item">Card link</a>
-<a href="#" class="paginate_button page-item">Another link</a> */}
+var profileUSerTemplate = `
+<div class="container-fluid well span6">
+	<div class="row-fluid">
+        <div class="span2" >
+		    <img src="Template/nouser.jpg" class="img-circle">
+        </div>
+        <hr>
+        <div class="span8">
+            <h3>{{NAME}}</h3>
+            <h6>Email: <i>{{EMAIL}}</i></h6>
+            <h6>Posts: <i>{{CPOSTS}}</i></h6>
+            <h6>Creado en: <i>{{DATECREATE}}</i></h6>
+            <h6><a href="#" id="btnVerPosts">Ver Posts... </a></h6>
+        </div>
+</div>
+</div>
+`
 
 function showPost(){
-  document.getElementById("lblPagina").textContent = "Posts";
   var data;
   var cabecera = new Headers();
   cabecera.append("Authorization",'Bearer '+ token);                    
@@ -60,24 +73,31 @@ function showPost(){
 
                         });
       document.getElementById("app").innerHTML=postView;
+      document.getElementById("app2").innerHTML="";
       var bes = document.getElementsByClassName("btnEmail");
       for(i=0; i < bes.length;i++)
       {
-          bes[i].addEventListener('click',showUserProfile);
+          bes[i].addEventListener('click',showUserEventProfile);
       }
+      document.getElementById("lblPagina").textContent = "Posts";
 
    })      
   .catch(error => console.error('Error:', error))
   .then(response => console.log('Success:', response));
 }
 
-function showMyPost(){
-  document.getElementById("lblPagina").textContent = "Mis Post";
+function showUserEventProfile(event){
+  var ueObject = event.target;
+  var idUser = ueObject.getAttribute('data-userid');
+  showUserProfile(idUser);
+}
+
+function showMyPost(userId,opciontPost2){
   var data;
   var cabecera = new Headers();
   cabecera.append("Authorization",'Bearer '+ token);                    
   cabecera.append('Content-Type', 'application/json');
-  fetch(`${API_PATH}/post?userId=${meUser.id}`, {
+  fetch(`${API_PATH}/post?userId=${userId}`, {
     method: 'GET',
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers:cabecera
@@ -99,12 +119,20 @@ function showMyPost(){
                                             ;
 
                         });
-      document.getElementById("app").innerHTML=postView;
+      if(opciontPost2===0){
+        document.getElementById("app").innerHTML=postView;
+        document.getElementById("app2").innerHTML="";
+      }
+      else{
+        document.getElementById("app2").innerHTML=postView;
+      }
+
       var bes = document.getElementsByClassName("btnEmail");
       for(i=0; i < bes.length;i++)
       {
-          bes[i].addEventListener('click',showUserProfile);
+          bes[i].addEventListener('click',showUserEventProfile);
       }
+      document.getElementById("lblPagina").textContent = "Mis Posts";
 
    })      
   .catch(error => console.error('Error:', error))
@@ -112,7 +140,7 @@ function showMyPost(){
 }
 
 function getTags(data){
-  var html = `Tags:`;
+  var html=``;
   $(data).each(function(index,value){
       html+=`<a href="javascript:void(0)" class="btn btn-link mx-0 px-0">${$.trim(value)}</a>, `;
   })
@@ -122,9 +150,37 @@ function getTags(data){
 // html+=`<a href="javascript:void(0)" class="btn btn-link mx-0 px-0" onclick="filtrarpost('${String($.trim(value))}')">${$.trim(value)}</a>, `;
 
 
-function showUserProfile(){
+function showUserProfile(idUser){
+  var data;
+  var cabecera = new Headers();
+  cabecera.append("Authorization",'Bearer '+ token);                    
+  cabecera.append('Content-Type', 'application/json');
+  fetch(`${API_PATH}/users/${idUser}`, {
+    method: 'GET',
+    body: JSON.stringify(data), // data can be `string` or {object}!
+    headers:cabecera
+  }).then(res => res.json())
+  .then(res => {
+      var postView = '';
+      postView = profileUSerTemplate.replace('{{DATECREATE}}',moment(res.createdAt).format('MMMM Do YYYY, h:mm:ss a'))
+                                    .replace('{{EMAIL}}',res.email)
+                                    .replace('{{ID}}',res.id)
+                                    .replace('{{NAME}}',res.name)
+                                    .replace('{{CPOSTS}}',res.posts)
+                                     ;
+      document.getElementById("app").innerHTML=postView;
+      document.getElementById("app2").innerHTML="";
+      document.getElementById("btnVerPosts").addEventListener('click',function(){showMyPost(res.id,1);}); 
+      // var bes = document.getElementsByClassName("btnEmail");
+      // for(i=0; i < bes.length;i++)
+      // {
+      //     bes[i].addEventListener('click',showUserProfile);
+      // }
+      document.getElementById("lblPagina").textContent = "Perfil de Usuario";
 
-
+   })      
+  .catch(error => console.error('Error:', error))
+  .then(response => console.log('Success:', response));
 }
 
 function logout() {
@@ -165,6 +221,8 @@ function logout() {
     }).then(res => res.json())
     .then(res => {
       meUser = res;
+      console.log(meUser.name);
+      // document.getElementById("txtUserMe").textContent = meUser.name;
      })      
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success:', response));
@@ -186,7 +244,8 @@ function logout() {
 
     document.getElementById("btnLogout").addEventListener('click',function(){logout();}); 
     document.getElementById("btnShowPost").addEventListener('click',function(){showPost();}); 
-    document.getElementById("btnShowMyPost").addEventListener('click',function(){showMyPost();}); 
+    document.getElementById("btnShowMyPost").addEventListener('click',function(){showMyPost(meUser.id,0);}); 
+    document.getElementById("btnShowMyProfile").addEventListener('click',function(){showUserProfile(meUser.id);}); 
     
   }
 
