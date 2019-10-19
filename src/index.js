@@ -7,10 +7,10 @@ var postTemplate = `
   <div class="card-body">
     <h5 class="card-title"><span class="oi oi-icon-name" title="icon name" aria-hidden="true"></span>{{TITLE}}</h5>
     <p class="card-text">{{BODY}}</p>
-    <h6 class="card-subtitle mb-2 text-muted">by: <a href="#"  data-liked="{{liked}}" data-postid="{{POSTID}}" data-userid="{{USERID}}" class="btnEmail">{{NAME}} - {{EMAIL}}</a>, <span style='color: grey'> {{DATE}} - </span><span style='color: grey'> <i>{{DATE2}}</i></span></h6>
+    <h6 class="card-subtitle mb-2 text-muted">by: <a href="#" data-userid="{{USERID}}" class="btnEmail">{{NAME}} - {{EMAIL}}</a>, <span style='color: grey'> {{DATE}} - </span><span style='color: grey'> <i>{{DATE2}}</i></span></h6>
     
     </br>
-    <button class="btn btn-primary btnLike" type="button" style="background-color: {{colorlike}}">
+    <button class="btn btn-primary btnLike" type="button" style="background-color: {{colorlike}}" data-liked="{{liked}}" data-postid="{{POSTID}}" >
     <i class="fas fa-thumbs-up"></i>
     </button>
     
@@ -101,8 +101,6 @@ function showLikeEventProfile(event){
   var ueObject = event.target;
   var idPost = ueObject.getAttribute('data-postid');
   var liked = ueObject.getAttribute('data-liked');
-  console.log("id post:"+idPost);
-  console.log("liked:"+liked);
 
   if(liked===true){
     QuitarLike(idPost);
@@ -206,14 +204,14 @@ function showUserProfile(idUser){
 
 
 function QuitarLike(postId) {
-
+  var cabecera = new Headers();
+  cabecera.append("Authorization",'Bearer '+ token);                    
+  cabecera.append('Content-Type', 'application/json');
   var data;
   fetch(`${API_PATH}/post/${postId}/like`, {
       method: 'DELETE',
       body: JSON.stringify(data), // data can be `string` or {object}!
-      headers:{
-        'Content-Type': 'application/json'
-      }
+      headers:cabecera
     }).then(res => res.json())
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success:', response));
@@ -221,14 +219,16 @@ function QuitarLike(postId) {
 }
 
 function DarLike(postId) {
-
+  
+  var cabecera = new Headers();
+  cabecera.append("Authorization",'Bearer '+ token);                    
+  cabecera.append('Content-Type', 'application/json');
   var data;
+
   fetch(`${API_PATH}/post/${postId}/like`, {
       method: 'PUT',
       body: JSON.stringify(data), // data can be `string` or {object}!
-      headers:{
-        'Content-Type': 'application/json'
-      }
+      headers:cabecera
     }).then(res => res.json())
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success:', response));
