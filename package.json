@@ -4,7 +4,7 @@
   "description": "",
   "main": "login.js",
   "scripts": {
-    "start": "webpack -d && node server.js",
+    "start": "webpack -d && node server.js --hot",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

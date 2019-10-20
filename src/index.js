@@ -10,13 +10,14 @@ var postTemplate = `
     <h6 class="card-subtitle mb-2 text-muted">by: <a href="#" data-userid="{{USERID}}" class="btnEmail">{{NAME}} - {{EMAIL}}</a>, <span style='color: grey'> {{DATE}} - </span><span style='color: grey'> <i>{{DATE2}}</i></span></h6>
     
     </br>
-    <button class="btn btn-primary btnLike" type="button" style="background-color: {{colorlike}}" data-liked="{{liked}}" data-postid="{{POSTID}}" >
+    <button href="#" class="btn btn-primary btnLike" type="button" style="background-color: {{colorlike}}" data-liked="{{liked}}" data-postid="{{POSTID}}" >
     <i class="fas fa-thumbs-up"></i>
     </button>
     
     <button class="btn btn-primary" type="button" style="background-color: green">
     <i class="fas fa-comments"></i>
     </button>
+
     </br>
     <i class="fas fa-eye"></i><label>&nbsp {{NLIKE}} Likes &nbsp</label>
     <i class="fas fa-thumbs-up"></i><label>&nbsp {{NVIEW}} Comentarios</label>
@@ -101,12 +102,26 @@ function showLikeEventProfile(event){
   var ueObject = event.target;
   var idPost = ueObject.getAttribute('data-postid');
   var liked = ueObject.getAttribute('data-liked');
-
-  if(liked===true){
-    QuitarLike(idPost);
-  }else{
-    DarLike(idPost);
+  
+  if(idPost == null || idPost == undefined){
+    return;
   }
+
+  if(liked == null || liked == undefined){
+    return;
+  }
+
+  if(liked=='true')
+  {
+    QuitarLike(idPost);
+    showPost();
+  }
+  else
+  {
+    DarLike(idPost);
+    showPost();
+  }
+
 }
 
 function showUserEventProfile(event){
@@ -204,36 +219,62 @@ function showUserProfile(idUser){
 
 
 function QuitarLike(postId) {
-  var cabecera = new Headers();
-  cabecera.append("Authorization",'Bearer '+ token);                    
-  cabecera.append('Content-Type', 'application/json');
   var data;
   fetch(`${API_PATH}/post/${postId}/like`, {
       method: 'DELETE',
       body: JSON.stringify(data), // data can be `string` or {object}!
-      headers:cabecera
-    }).then(res => res.json())
+      headers:{
+        "Authorization":'Bearer '+ token,
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => {
+      console.log(res.status);
+     })   
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success:', response));
-    showPost();
+    //showPost();
 }
 
-function DarLike(postId) {
-  
-  var cabecera = new Headers();
-  cabecera.append("Authorization",'Bearer '+ token);                    
-  cabecera.append('Content-Type', 'application/json');
+
+function DarLike(postId){
+  token = localStorage.getItem('token');
+
   var data;
-
   fetch(`${API_PATH}/post/${postId}/like`, {
-      method: 'PUT',
-      body: JSON.stringify(data), // data can be `string` or {object}!
-      headers:cabecera
-    }).then(res => res.json())
-    .catch(error => console.error('Error:', error))
-    .then(response => console.log('Success:', response));
-    showPost();
+    method: 'PUT',
+    body: JSON.stringify(data), // data can be `string` or {object}!
+    headers:{
+      "Authorization":'Bearer '+ token,
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => {
+    console.log(res.status);
+   })      
+  .catch(error => console.error('Error:', error))
+  .then(response => console.log('Success:', response));
 }
+
+// function DarLike(postId) {
+  
+//   var cabecera = new Headers();
+//   cabecera.append("Authorization",'Bearer '+ token);                    
+//   cabecera.append('Content-Type', 'application/json');
+//   var data;
+
+//   fetch(`${API_PATH}/post/${postId}/like`, {
+//       method: 'PUT',
+//       body: JSON.stringify(data), // data can be `string` or {object}!
+//       headers:cabecera
+//     }).then(res => res.json())
+//     .then(res => {
+//       console.log(res);
+//      })
+//     .catch(error => console.error('Error:', error))
+//     .then(response => console.log('Success:', response));
+//     //showPost();
+// }
 
 
 function LoadMeUser(){
