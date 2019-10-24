@@ -55,6 +55,7 @@ class MyPost extends Route {
         });
 
         document.getElementById('posts').innerHTML = sp
+        document.getElementById("lblPagina").textContent = "Mis Posts";
 
       function getTags(data){
         var html=``;

@@ -1,10 +1,30 @@
-/*
-function saludar(){
-var nombre =document.getElementById("nombre_persona").value;
-//alert("Hola "+ nombre + "!");
-document.getElementById("placeholder").textContent = "Hola " + nombre;
-}
-*/
+//import security from './services/Security'
+
+// function login(){
+
+//   var email = document.getElementById('username').value;
+//   var password = document.getElementById('password').value;
+  
+//   if(username==""){
+//     alert("Usuario no puede estar en blanco");
+//     document.getElementById("username").focus();
+//     return;
+//   }
+//   if(password==""){
+//     alert("Contraseña no puede estar en blanco");
+//     document.getElementById("password").focus();
+//     return;
+//   }
+
+//   security.login(email, password)
+//       .then(value => {
+        
+//         alert("Usuario " + value.name + " logeado correctamente");
+//         localStorage.setItem('token', value.token);
+//         window.location.href ="index.html";
+//       })
+//       .catch(err => console.error(err));
+// }
 
 function login(){
     var username =document.getElementById("username").value;
@@ -69,14 +89,6 @@ window.onload = function(){
   if (isLoged()) {
     window.location.href = 'index.html';
   };
-
-
   document.getElementById("btnLogin").addEventListener('click',function(){login();});
 }
-    
-/*
-window.onload = function(){
-//document.getElementById("btnSaludar").addEventListener('click',function(){alert("Hola Persona");)});
-document.getElementById("btnSaludar").addEventListener('click',function(){saludar();});
-}
-*/
+

@@ -53,7 +53,6 @@ export default class Request {
 
 
     async put2(path, data){
-      console.log("looooco")
       var headers = {
           'Content-Type': 'application/json'
         }
@@ -92,6 +91,7 @@ export default class Request {
 
           if(response.status === 200 || response.status === 201 ) {
             return response.json();
+
           }
         
         return undefined;

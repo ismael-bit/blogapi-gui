@@ -17,7 +17,7 @@ async function validateSession(){
     window.blogapi = new BlogApi(API_PATH, token);
     window.me = await blogapi.getMe();
     
-    console.log(me);
+
     // if me is undefined resturn to login page.
     if (me === undefined){
         localStorage.removeItem('token');

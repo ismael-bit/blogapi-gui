@@ -1,5 +1,6 @@
 import Route from '../libs/route';
 import moment from 'moment'
+import ProfileUser from './functions';
 
 
 var postTemplate = `
@@ -7,7 +8,7 @@ var postTemplate = `
   <div class="card-body">
     <h5 class="card-title"><span class="oi oi-icon-name" title="icon name" aria-hidden="true"></span>{{TITLE}}</h5>
     <p class="card-text">{{BODY}}</p>
-    <h6 class="card-subtitle mb-2 text-muted">by: <a href="#profile" data-userid="{{USERID}}" class="btnEmail">{{NAME}} - {{EMAIL}}</a>, <span style='color: grey'> {{DATE}} - </span><span style='color: grey'> <i>{{DATE2}}</i></span></h6>
+    <h6 class="card-subtitle mb-2 text-muted">by: <a href="#" data-userid="{{USERID}}" class="btnEmail">{{NAME}} - {{EMAIL}}</a>, <span style='color: grey'> {{DATE}} - </span><span style='color: grey'> <i>{{DATE2}}</i></span></h6>
     </br>
     
     <button class="btnLike btn btn-primary fas fa-thumbs-up" type="button" style="background-color: {{colorlike}}" data-liked="{{liked}}" data-postid="{{POSTID}}">
@@ -84,9 +85,8 @@ class Post extends Route {
           var ueObject = event.target;
           var idPost = ueObject.getAttribute('data-postid');
           var liked = ueObject.getAttribute('data-liked');
-
-          alert("idPost=" + idPost)
-          alert("liked=" + liked)
+          
+          var mensajatemp = "";
 
           if(idPost == null || idPost == undefined){
             return;
@@ -96,14 +96,16 @@ class Post extends Route {
           }
           if(liked=='true')
           {
-            console.log("Dislike")
+            mensajatemp = "No me gusta! Temporalmente debe refrescar la pagina.";
             QuitarLike(idPost);
           }
           else
           {
-            console.log("Like")
+            mensajatemp = "Me gusta!Temporalmente debe refrescar la pagina.";
             DarLike(idPost);
           }
+          alert(mensajatemp)
+
         } 
 
       function DarLike(postId){
@@ -143,7 +145,7 @@ class Post extends Route {
       }
 
       function showUserProfile(idUser){
-        var userSelected = blogapi.getUser(idUser);
+        ProfileUser(idUser);
       }        
     
   }
