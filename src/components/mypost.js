@@ -26,7 +26,7 @@ class MyPost extends Route {
     }
 
     clickBtn3(){
-        console.log("Trying btn1 on post route")
+        //console.log("Trying btn1 on post route")
     }
 
    async whenMounted(){

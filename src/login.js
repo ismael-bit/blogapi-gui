@@ -46,7 +46,6 @@ function login(){
         password:password,
         email:username
     };
-    console.log(data);
     
     fetch(`${API_PATH}/login`, {
         method: 'POST',

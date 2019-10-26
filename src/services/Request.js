@@ -29,7 +29,6 @@ export default class Request {
     }
 
     async put(path, data){
-        console.log("looooco")
         var headers = {
             'Content-Type': 'application/json'
           }
@@ -107,8 +106,7 @@ export default class Request {
             headers["Authorization"] = `Bearer ${this.token}`;
         }
 
-        console.log('Headers', headers);
-
+ 
         let response = await fetch(path, {
             method: 'DELETE',
             headers: headers
@@ -131,7 +129,6 @@ export default class Request {
           headers["Authorization"] = `Bearer ${this.token}`;
       }
 
-      console.log('Headers', headers);
 
       let response = await fetch(path, {
           method: 'DELETE',

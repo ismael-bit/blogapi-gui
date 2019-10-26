@@ -17,10 +17,18 @@ var postTemplate = `
     <button class="btn btn-primary fas fa-comments" type="button" style="background-color: green">
     </button>
 
+    <hr>
+    <div class="form-group mb-1">
+    <textarea class="form-control text-comment" placeholder="Comentar aqui..." rows="3"></textarea>
     </br>
-    <i class="fas fa-eye"></i><label>&nbsp {{NLIKE}} Likes &nbsp</label>
+    <button class="btn btn-success btn-sm btn-send"><i class="fa fa-paper-plane fa-lg"></i> Comentar</button>
+    </br>
+    <i class="fas fa-eye" ></i><label>&nbsp <span id="like-{{POSTID}}">{{NLIKE}}</span> Likes &nbsp</label>
     <i class="fas fa-thumbs-up"></i><label>&nbsp {{NVIEW}} Comentarios</label>
     <small class="text-tags text-truncate float-right"><em>{{taging}}</em></small>
+
+    </div>
+
 
     </div>
 </div>
@@ -31,8 +39,21 @@ class Post extends Route {
 
     constructor(){
         super('post', { htmlName : '/views/post.html', default : true });
-        this.onMountCb = this.whenMounted
+        this.onMountCb = this.whenMounted;
+
+        document.addEventListener('likes',  function(event){
+          event = event.detail;
+          console.log("EVENT.....", event);
+          document.getElementById("like-"+event.postId).textContent = event.likes;
+          switch(event.likeType){
+            case "like":
+            case "dislike":
+               
+          }
+        }
+    );
     }
+
 
     clickBtn3(){
         console.log("Trying btn1 on post route")
@@ -47,7 +68,7 @@ class Post extends Route {
 
         posts.forEach(p => {
             
-            sp+= postTemplate.replace('{{BODY}}',p.body)
+            sp+= postTemplate.replace('{{BODY}}',p.body.substring(0,200)+"...")
             .replace('{{NAME}}',p.userName)
             .replace('{{EMAIL}}',p.userEmail)
             .replace('{{TITLE}}',p.title)
@@ -59,8 +80,8 @@ class Post extends Route {
             .replace('{{colorlike}}', (p.liked==true)?'#000080':'#87CEFA')
             .replace('{{taging}}', getTags(p.tags))
             //.replace('{{taging}}', p.tags)
-            .replace('{{liked}}', p.liked)
-            .replace('{{POSTID}}', p.id)
+            .replace(/{{liked}}/g, p.liked)
+            .replace(/{{POSTID}}/g, p.id)
         });
 
         document.getElementById('posts').innerHTML = sp
@@ -84,7 +105,7 @@ class Post extends Route {
         function showLikeEventProfile(event){
           var ueObject = event.target;
           var idPost = ueObject.getAttribute('data-postid');
-          var liked = ueObject.getAttribute('data-liked');
+          var liked = ueObject.getAttribute('data-liked') == 'true';
           
           var mensajatemp = "";
 
@@ -94,24 +115,25 @@ class Post extends Route {
           if(liked == null || liked == undefined){
             return;
           }
-          if(liked=='true')
-          {
+          if(liked==true) {
             mensajatemp = "No me gusta! Temporalmente debe refrescar la pagina.";
             QuitarLike(idPost);
-          }
-          else
-          {
+            
+          } else {
             mensajatemp = "Me gusta!Temporalmente debe refrescar la pagina.";
             DarLike(idPost);
+            
           }
-          alert(mensajatemp)
+          // alert(mensajatemp)
+          console.log(!liked);
+          ueObject.setAttribute('data-liked', !liked);
 
         } 
 
       function DarLike(postId){
         blogapi.likePost(postId)
         .then(value => {
-            console.log(value.status);
+            //console.log(value.status);
         })
         .catch(err => console.error(err));
       }
@@ -119,7 +141,7 @@ class Post extends Route {
       function QuitarLike(postId){
         blogapi.unlikePost(postId)
         .then(value => {
-            console.log(value.status);
+            //console.log(value.status);
         })
         .catch(err => console.error(err));
       }
@@ -146,6 +168,7 @@ class Post extends Route {
 
       function showUserProfile(idUser){
         ProfileUser(idUser);
+        
       }        
     
   }
