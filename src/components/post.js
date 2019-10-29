@@ -1,6 +1,7 @@
 import Route from '../libs/route';
 import moment from 'moment'
 import ProfileUser from './functions';
+import PostComments, { verPostComments } from './comments';
 
 
 var postTemplate = `
@@ -11,17 +12,12 @@ var postTemplate = `
     <h6 class="card-subtitle mb-2 text-muted">by: <a href="#" data-userid="{{USERID}}" class="btnEmail">{{NAME}} - {{EMAIL}}</a>, <span style='color: grey'> {{DATE}} - </span><span style='color: grey'> <i>{{DATE2}}</i></span></h6>
     </br>
     
-    <button class="btnLike btn btn-primary fas fa-thumbs-up" type="button" style="background-color: {{colorlike}}" data-liked="{{liked}}" data-postid="{{POSTID}}">
+    <button class="btnLike btn btn-primary fas fa-thumbs-up" type="button" style="background-color: {{colorlike}}" data-liked="{{liked}}" data-postid="{{POSTID}}" id="buttonlike-{{POSTID}}">
     </button>
     
-    <button class="btn btn-primary fas fa-comments" type="button" style="background-color: green">
+    <button class="btnComment btn btn-primary fas fa-comments" type="button" style="background-color: green" data-postid="{{POSTID}}">
     </button>
 
-    <hr>
-    <div class="form-group mb-1">
-    <textarea class="form-control text-comment" placeholder="Comentar aqui..." rows="3"></textarea>
-    </br>
-    <button class="btn btn-success btn-sm btn-send"><i class="fa fa-paper-plane fa-lg"></i> Comentar</button>
     </br>
     <i class="fas fa-eye" ></i><label>&nbsp <span id="like-{{POSTID}}">{{NLIKE}}</span> Likes &nbsp</label>
     <i class="fas fa-thumbs-up"></i><label>&nbsp {{NVIEW}} Comentarios</label>
@@ -41,15 +37,21 @@ class Post extends Route {
         super('post', { htmlName : '/views/post.html', default : true });
         this.onMountCb = this.whenMounted;
 
-        document.addEventListener('likes',  function(event){
+          document.addEventListener('likes',  function(event){
           event = event.detail;
-          console.log("EVENT.....", event);
           document.getElementById("like-"+event.postId).textContent = event.likes;
-          switch(event.likeType){
-            case "like":
-            case "dislike":
-               
-          }
+
+          // var x  = document.getElementById("buttonlike-"+event.postId)
+          // console.log(event.likeType)
+          // console.log(x)
+
+          // switch(event.likeType){
+          //   case "like":
+          //       x.setAttribute('style','background-color: #000080')
+          //   case "dislike":
+          //       x.setAttribute('style','background-color: #87CEFA')
+          //   }
+
         }
     );
     }
@@ -125,8 +127,14 @@ class Post extends Route {
             
           }
           // alert(mensajatemp)
-          console.log(!liked);
+          //console.log(!liked);
           ueObject.setAttribute('data-liked', !liked);
+
+          if(liked){
+            ueObject.setAttribute('style','background-color: #87CEFA');
+          }else{
+            ueObject.setAttribute('style','background-color: #000080');
+          }
 
         } 
 
@@ -169,8 +177,20 @@ class Post extends Route {
       function showUserProfile(idUser){
         ProfileUser(idUser);
         
-      }        
-    
+      }
+
+      var bes = document.getElementsByClassName("btnComment");
+      for(i=0; i < bes.length;i++)
+      {
+          bes[i].addEventListener('click',showUserCommentProfile);
+      }
+
+      function showUserCommentProfile(event){
+        var ueObject = event.target;
+        var idPost = ueObject.getAttribute('data-postid');
+        verPostComments(idPost);
+      }      
+      
   }
 
 }

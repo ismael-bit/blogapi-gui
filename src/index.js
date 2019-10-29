@@ -22,7 +22,7 @@ async function validateSession(){
     ws.onmessage = function(e){
         //console.log(e.data);
         var ev = JSON.parse(e.data);
-        console.log(ev);
+        //console.log(ev);
         //console.log(ev.type + " - " + ev.userEmail);
         // if(ev.type=="likes") {
            
