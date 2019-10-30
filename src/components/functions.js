@@ -17,6 +17,7 @@ var profileTemplate = `
 </div>
 `
 
+
 export function ProfileUser(idUser){
 
     blogapi.getUser(idUser)

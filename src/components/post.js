@@ -19,8 +19,9 @@ var postTemplate = `
     </button>
 
     </br>
-    <i class="fas fa-eye" ></i><label>&nbsp <span id="like-{{POSTID}}">{{NLIKE}}</span> Likes &nbsp</label>
-    <i class="fas fa-thumbs-up"></i><label>&nbsp {{NVIEW}} Comentarios</label>
+    <i class="fas fa-thumbs-up" ></i><label>&nbsp <span id="like-{{POSTID}}">{{NLIKE}}</span> Likes &nbsp</label>
+    <i class="fas fa-eye"></i><label>&nbsp {{NVIEW}} Vistas &nbsp</label>
+    <i class="fas fa-comments"></i><label>&nbsp {{NCOMMENT}} Comentarios</label>
     <small class="text-tags text-truncate float-right"><em>{{taging}}</em></small>
 
     </div>
@@ -79,6 +80,7 @@ class Post extends Route {
             .replace('{{DATE2}}', moment(p.createdAt).fromNow())
             .replace('{{NLIKE}}', p.likes)
             .replace('{{NVIEW}}', p.views)
+            .replace('{{NCOMMENT}}', p.comments)
             .replace('{{colorlike}}', (p.liked==true)?'#000080':'#87CEFA')
             .replace('{{taging}}', getTags(p.tags))
             //.replace('{{taging}}', p.tags)
