@@ -118,19 +118,25 @@ export function verPostComments(idPost){
 
       function cargarComentarios(idPost){
         var sp = '';
+        var sp2 = '';
+        var sp3 = '';
+
         //commentarios = '';
         blogapi.getPostCommets(idPost)
         .then(res => {
 
           res.forEach(p => {
-            sp+= commentsTemplate.replace('{{COMENTARIO}}',p.body)
+            sp2 = commentsTemplate.replace('{{COMENTARIO}}',p.body)
                                  .replace('{{USER}}',p.userName)
                                  .replace('{{EMAIL}}',p.userEmail)
                                  .replace('{{FECHACOMENTARIO}}', moment(p.createdAt).format('MMMM Do YYYY, h:mm:ss a'));
-                          });
-             //commentarios = sp
-             document.getElementById('app').innerHTML = postxxx + commentsTemplateH + sp + commentsTemplateF
+            sp3 = sp2
+            sp2 = sp
+            sp = sp3 + sp2
 
+            });
+
+             document.getElementById('app').innerHTML = postxxx + commentsTemplateH + sp + commentsTemplateF
              document.getElementById("btnComentar").addEventListener('click',Comentarevent);
         })
         .catch(err => console.error(err));

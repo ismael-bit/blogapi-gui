@@ -69,10 +69,12 @@ class Post extends Route {
 
         var posts = await blogapi.getPosts();
         var sp = '';
+        var sp2 = '';
+        var sp3 = '';
 
         posts.forEach(p => {
             
-            sp+= postTemplate.replace('{{BODY}}',p.body.substring(0,200)+"...")
+           sp2 = postTemplate.replace('{{BODY}}',p.body.substring(0,200)+"...")
             .replace('{{NAME}}',p.userName)
             .replace('{{EMAIL}}',p.userEmail)
             .replace('{{TITLE}}',p.title)
@@ -87,6 +89,10 @@ class Post extends Route {
             //.replace('{{taging}}', p.tags)
             .replace(/{{liked}}/g, p.liked)
             .replace(/{{POSTID}}/g, p.id)
+            //console.log(sp2)
+            sp3 = sp2
+            sp2 = sp
+            sp = sp3 + sp2
         });
 
         document.getElementById('posts').innerHTML = sp
