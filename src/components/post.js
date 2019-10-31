@@ -20,8 +20,8 @@ var postTemplate = `
 
     </br>
     <i class="fas fa-thumbs-up" ></i><label>&nbsp <span id="like-{{POSTID}}">{{NLIKE}}</span> Likes &nbsp</label>
-    <i class="fas fa-eye"></i><label>&nbsp {{NVIEW}} Vistas &nbsp</label>
-    <i class="fas fa-comments"></i><label>&nbsp {{NCOMMENT}} Comentarios</label>
+    <i class="fas fa-eye"></i><label>&nbsp <span id="view-{{POSTID}}">{{NVIEW}}</span> Vistas &nbsp</label>
+    <i class="fas fa-comments"></i><label>&nbsp <span id="comment-{{POSTID}}">{{NCOMMENT}}</span> Comentarios</label>
     <small class="text-tags text-truncate float-right"><em>{{taging}}</em></small>
 
     </div>
@@ -38,24 +38,25 @@ class Post extends Route {
         super('post', { htmlName : '/views/post.html', default : true });
         this.onMountCb = this.whenMounted;
 
-          document.addEventListener('likes',  function(event){
-          event = event.detail;
-          document.getElementById("like-"+event.postId).textContent = event.likes;
-
-          // var x  = document.getElementById("buttonlike-"+event.postId)
-          // console.log(event.likeType)
-          // console.log(x)
-
-          // switch(event.likeType){
-          //   case "like":
-          //       x.setAttribute('style','background-color: #000080')
-          //   case "dislike":
-          //       x.setAttribute('style','background-color: #87CEFA')
-          //   }
-
+        document.addEventListener('likes',  function(event){
+        event = event.detail;
+        document.getElementById("like-"+event.postId).textContent = event.likes;
         }
-    );
-    }
+        );
+        document.addEventListener('view-post',  function(event){
+        event = event.detail;
+        document.getElementById("view-"+event.postId).textContent = event.views;
+        }
+        );
+
+        document.addEventListener('new-comment',  function(event){
+        event = event.detail;
+        document.getElementById("comment-"+event.postId).textContent = event.comments;
+        }
+        );
+
+
+  }
 
 
     clickBtn3(){

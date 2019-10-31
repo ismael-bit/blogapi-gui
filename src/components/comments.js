@@ -8,8 +8,8 @@ var postTemplate = `
     <h6 class="card-subtitle mb-2 text-muted">by: {{NAME}} - {{EMAIL}}, <span style='color: grey'> {{DATE}} - </span><span style='color: grey'> <i>{{DATE2}}</i></span></h6>
     </br>
     <i class="fas fa-thumbs-up" ></i><label>&nbsp <span id="like-{{POSTID}}">{{NLIKE}}</span> Likes &nbsp</label>
-    <i class="fas fa-eye"></i><label>&nbsp {{NVIEW}} Vistas &nbsp</label>
-    <i class="fas fa-comments"></i><label>&nbsp <span id="txtcantcomentarios">{{NCOMMENT}}</span> Comentarios</label>
+    <i class="fas fa-eye"></i><label>&nbsp <span id="view-{{POSTID}}">{{NVIEW}}</span> Vistas &nbsp</label>
+    <i class="fas fa-comments"></i><label>&nbsp <span id="comment-{{POSTID}}">{{NCOMMENT}}</span> Comentarios</label>
 
     <small class="text-tags text-truncate float-right"><em>{{taging}}</em></small>
 
@@ -55,18 +55,23 @@ var commentsTemplate = `
 
 var postxxx= '';
 
-document.addEventListener('new-comment',  function(event){
+document.addEventListener('likes',  function(event){
   event = event.detail;
-  document.getElementById("txtcantcomentarios").textContent = event.comments;
-}
-);
+  document.getElementById("like-"+event.postId).textContent = event.likes;
+  }
+  );
+  document.addEventListener('view-post',  function(event){
+  event = event.detail;
+  document.getElementById("view-"+event.postId).textContent = event.views;
+  }
+  );
 
-document.addEventListener('new-comment',  function(event){
+  document.addEventListener('new-comment',  function(event){
   event = event.detail;
-  console.log(event)
-  cargarComentarios(event.postId);
-}
-);
+  document.getElementById("comment-"+event.postId).textContent = event.comments;
+  cargarComentarios(event.postId)
+  }
+  );
 
 
 
