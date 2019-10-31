@@ -1,8 +1,6 @@
 import Router from './libs/router';
 import {post, mypost, profile, ProfileUser,postear } from './components/index';
 import BlogApi from './services/BlogApi'
-//import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'open-iconic/font/css/open-iconic-bootstrap.css'
 
 var userSelected = null;
 
