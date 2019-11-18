@@ -1,8 +1,7 @@
-import Route from '../libs/route';
+import Route from "../libs/route";
 // import moment from 'moment'
 // import ProfileUser from './functions';
 // import PostComments, { verPostComments } from './comments';
-
 
 var postearTemplate = `
 <div class="card" style="margin-top: 10px">
@@ -19,66 +18,60 @@ var postearTemplate = `
       </div>
     </div>
 </div>
-`
+`;
 
 class Postear extends Route {
-
-    constructor(){
-        super('postear', { htmlName : '/views/post.html', default : true });
-        this.onMountCb = this.whenMounted;
+  constructor() {
+    super("postear", { htmlName: "/views/post.html", default: true });
+    this.onMountCb = this.whenMounted;
   }
 
+  clickBtn3() {
+    console.log("Trying btn1 on post route");
+  }
 
-    clickBtn3(){
-        console.log("Trying btn1 on post route")
-    }
-
-   async whenMounted(){
- 
-    
+  async whenMounted() {
     document.getElementById("lblPagina").textContent = "Postear";
-    document.getElementById('posts').innerHTML = postearTemplate
-    document.getElementById("btnComentar").addEventListener('click',Publicarevent);
-    
+    document.getElementById("posts").innerHTML = postearTemplate;
+    document
+      .getElementById("btnComentar")
+      .addEventListener("click", Publicarevent);
   }
-
-  
 }
 
-function Publicarevent(event){
-  publicar()
+function Publicarevent(event) {
+  publicar();
 }
 
-function publicar(){
-
+function publicar() {
   var titulo = document.getElementById("txttitle").value;
   var cuerpo = document.getElementById("txtbody").value;
   var tags = document.getElementById("txttags").value;
 
-  if(titulo==""){
+  if (titulo == "") {
     alert("Debe escribir un título");
     document.getElementById("txttitle").focus();
     return;
   }
 
-  if(cuerpo==""){
+  if (cuerpo == "") {
     alert("Debe escribir un comentario");
     document.getElementById("txtbody").focus();
     return;
   }
 
-  var data ={
-      title:titulo,
-      body:cuerpo,
-      tags:tags.split(',').map(Function.prototype.call, String.prototype.trim)
+  var data = {
+    title: titulo,
+    body: cuerpo,
+    tags: tags.split(",").map(Function.prototype.call, String.prototype.trim)
   };
   //console.log(JSON.stringify(data))
-  blogapi.createPost(data)
-  .then(value => {
-    window.location.href = 'index.html';
-  })
-  .catch(err => console.error(err));
-
+  blogapi
+    .createPost(data)
+    .then(value => {
+      window.location.href = "index.html";
+    })
+    .catch(err => console.error(err));
 }
 
 var postear = new Postear();

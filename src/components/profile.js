@@ -1,5 +1,5 @@
-import Route from '../libs/route';
-import moment from 'moment'
+import Route from "../libs/route";
+import moment from "moment";
 
 var profileTemplate = `
 <div class="container-fluid well span6">
@@ -17,44 +17,45 @@ var profileTemplate = `
         </div>
 </div>
 </div>
-`
+`;
 
 class Profile extends Route {
+  constructor() {
+    super("profile", { content: "<h5>Loading page</h5>" });
+    this.onMountCb = this.whenMounted;
+  }
 
-    constructor(){
-        super('profile', { content: '<h5>Loading page</h5>' })
-        this.onMountCb = this.whenMounted
+  async logout() {
+    var logout = await blogapi.logout();
+
+    if (logout !== undefined) {
+      localStorage.removeItem("token");
+      window.location.href = "/login.html";
     }
+  }
 
-   async logout(){
+  whenMounted(cb) {
+    // setTimeout(() => {
+    var t = "";
+    t = profileTemplate
+      .replace(
+        "{{DATECREATE}}",
+        moment(me.createdAt).format("MMMM Do YYYY, h:mm:ss a")
+      )
+      .replace("{{EMAIL}}", me.email)
+      .replace("{{ID}}", me.id)
+      .replace("{{NAME}}", me.name)
+      .replace("{{CPOSTS}}", me.posts);
+    // set the html page
+    cb(t);
 
-        var logout = await blogapi.logout();
+    document.getElementById("lblPagina").textContent = "Perfil de Usuario";
 
-        if (logout !== undefined){
-            localStorage.removeItem('token');
-            window.location.href = '/login.html';
-        }
-    }
-
-    whenMounted(cb){
-
-        // setTimeout(() => {
-        var t = '';
-        t = profileTemplate.replace('{{DATECREATE}}',moment(me.createdAt).format('MMMM Do YYYY, h:mm:ss a'))
-                                      .replace('{{EMAIL}}',me.email)
-                                      .replace('{{ID}}',me.id)
-                                      .replace('{{NAME}}',me.name)
-                                      .replace('{{CPOSTS}}',me.posts)
-                                       ;
-        // set the html page
-        cb(t);
-
-        document.getElementById("lblPagina").textContent = "Perfil de Usuario";        
-
-        document.getElementById('btnLogout')
-        .addEventListener('click', () => this.logout());
-        // }, 3000);
-    }
+    document
+      .getElementById("btnLogout")
+      .addEventListener("click", () => this.logout());
+    // }, 3000);
+  }
 }
 
 var profile = new Profile();
