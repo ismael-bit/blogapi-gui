@@ -22,7 +22,7 @@
   "homepage": "https://github.com/ismael-bit/blogapi-gui#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "moment": "^2.24.0"
+    "moment": "^2.29.4"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
